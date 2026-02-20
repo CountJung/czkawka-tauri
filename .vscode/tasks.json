@@ -1,0 +1,39 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "kill-dev-ports",
+      "type": "shell",
+      "command": "Get-Process -Id (Get-NetTCPConnection -LocalPort 4000,4001 -ErrorAction SilentlyContinue | Select-Object -ExpandProperty OwningProcess -Unique) -ErrorAction SilentlyContinue | Stop-Process -Force; exit 0",
+      "isBackground": false,
+      "problemMatcher": []
+    },
+    {
+      "label": "debug:web",
+      "type": "shell",
+      "command": "pnpm run debug:web",
+      "options": {
+        "cwd": "${workspaceFolder}"
+      },
+      "isBackground": true,
+      "dependsOn": "kill-dev-ports",
+      "problemMatcher": [
+        {
+          "pattern": [
+            {
+              "regexp": "__NEVER_MATCHES__",
+              "file": 1,
+              "location": 2,
+              "message": 3
+            }
+          ],
+          "background": {
+            "activeOnStart": true,
+            "beginsPattern": "VITE",
+            "endsPattern": "Local:\\s+http://localhost:4000"
+          }
+        }
+      ]
+    }
+  ]
+}

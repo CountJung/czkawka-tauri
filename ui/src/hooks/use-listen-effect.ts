@@ -1,5 +1,6 @@
 import { listen } from '@tauri-apps/api/event';
 import { useEffect, useRef } from 'react';
+import { isTauri } from '~/utils/common';
 
 export function useListenEffect<T>(name: string, fn: (v: T) => void) {
   const lock = useRef(false);
@@ -7,6 +8,9 @@ export function useListenEffect<T>(name: string, fn: (v: T) => void) {
   fnRef.current = fn;
 
   useEffect(() => {
+    if (!isTauri()) {
+      return;
+    }
     if (lock.current) {
       return;
     }

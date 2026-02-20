@@ -11,6 +11,9 @@
   "homepage": "https://github.com/shixinhuang99/czkawka-tauri",
   "description": "A Tauri-based frontend for Czkawka on macOS and Windows",
   "scripts": {
+    "dev": "pnpm tsx ./scripts/run.ts tauri",
+    "debug:web": "pnpm tsx ./scripts/run.ts web",
+    "typecheck": "pnpm tsc -p ./ui/tsconfig.json --noEmit && pnpm tsc -p ./tsconfig.json --noEmit",
     "build:ui": "pnpm run --filter ./ui build",
     "build:tauri:mac": "pnpm tauri build -t universal-apple-darwin",
     "build:tauri:win": "pnpm tauri build"

@@ -17,7 +17,7 @@ export default defineConfig(async () => {
     server: {
       port: 4000,
       strictPort: true,
-      host: false,
+      host: 'localhost',
       hmr: {
         protocol: 'ws',
         port: 4001,

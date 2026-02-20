@@ -1,5 +1,6 @@
 import { open as openFileDialog } from '@tauri-apps/plugin-dialog';
 import { useAtomValue, useSetAtom } from 'jotai';
+import { isTauri } from '~/utils/common';
 import { FileJsonIcon } from 'lucide-react';
 import { useState } from 'react';
 import { currentToolAtom, logsAtom } from '~/atom/primitive';
@@ -36,6 +37,9 @@ export function SaveResult({ disabled }: SaveResultProps) {
 
   const handleOk = async () => {
     if (loading) {
+      return;
+    }
+    if (!isTauri()) {
       return;
     }
     const dir = await openFileDialog({ multiple: false, directory: true });

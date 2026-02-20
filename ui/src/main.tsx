@@ -23,7 +23,7 @@ function ErrorFallback({ error }: FallbackProps) {
         <p className="text-lg font-bold text-red-500">
           {t('somethingWentWrong')}
         </p>
-        <p>{error.message}</p>
+        <p>{error instanceof Error ? error.message : String(error)}</p>
       </div>
     </div>
   );

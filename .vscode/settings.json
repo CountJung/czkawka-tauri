@@ -11,5 +11,6 @@
   },
   "[typescriptreact]": {
     "editor.defaultFormatter": "biomejs.biome"
-  }
+  },
+  "github.copilot.chat.codeGeneration.useInstructionFiles": false
 }

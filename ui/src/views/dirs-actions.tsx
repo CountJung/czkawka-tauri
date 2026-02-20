@@ -21,7 +21,7 @@ import {
 } from '~/components/shadcn/dialog';
 import { useT } from '~/hooks';
 import type { DirsType } from '~/types';
-import { splitStr } from '~/utils/common';
+import { isTauri, splitStr } from '~/utils/common';
 import { getRowSelectionKeys } from '~/utils/table-helper';
 
 interface DirsActionsProps {
@@ -56,6 +56,9 @@ export function DirsActions({
   };
 
   const handleAddPath = async () => {
+    if (!isTauri()) {
+      return;
+    }
     setOpenFileDialogLoading(true);
     const dir = await openFileDialog({ multiple: false, directory: true });
     setOpenFileDialogLoading(false);
@@ -87,7 +90,11 @@ export function DirsActions({
 
   return (
     <div>
-      <TooltipButton tooltip={t('add')} onClick={handleAddPath}>
+      <TooltipButton
+        tooltip={t('add')}
+        onClick={handleAddPath}
+        disabled={!isTauri() || openFileDialogLoading}
+      >
         {openFileDialogLoading ? (
           <LoaderCircleIcon className="animate-spin" />
         ) : (

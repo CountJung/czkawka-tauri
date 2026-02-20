@@ -6,7 +6,7 @@ import {
   Settings2Icon,
   Trash2Icon,
 } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Trans } from 'react-i18next';
 import {
   excludedDirsRowSelectionAtom,
@@ -21,7 +21,6 @@ import { TooltipContent } from '~/components/custom/tooltip';
 import {
   createColumns,
   DataTable,
-  type RowSelectionUpdater,
 } from '~/components/data-table';
 import { Tabs, TabsList, TabsTrigger } from '~/components/shadcn/tabs';
 import { Tooltip, TooltipTrigger } from '~/components/shadcn/tooltip';
@@ -124,17 +123,14 @@ function IncludedDirsTable() {
     };
   });
 
-  const handleRowSelectionChange = (updater: RowSelectionUpdater) => {
-    setRowSelection(updater);
-    const selectedKeys =
-      typeof updater === 'function' ? updater(rowSelection) : updater;
+  useEffect(() => {
     setSettings((old) => {
       return {
         ...old,
-        includedDirectoriesReferenced: getRowSelectionKeys(selectedKeys),
+        includedDirectoriesReferenced: getRowSelectionKeys(rowSelection),
       };
     });
-  };
+  }, [rowSelection, setSettings]);
 
   return (
     <div className="w-1/2 flex flex-col">
@@ -142,7 +138,7 @@ function IncludedDirsTable() {
         <SectionHeader>{t('includeDirectories')}</SectionHeader>
         <DirsActions
           rowSelection={rowSelection}
-          onRowSelectionChange={handleRowSelectionChange}
+          onRowSelectionChange={setRowSelection}
           field="includedDirectories"
         />
       </div>
@@ -153,7 +149,7 @@ function IncludedDirsTable() {
         emptyTip={t('pleaseAddPath')}
         layout="grid"
         rowSelection={rowSelection}
-        onRowSelectionChange={handleRowSelectionChange}
+        onRowSelectionChange={setRowSelection}
         sorting={sorting}
         onSortingChange={setSorting}
       />

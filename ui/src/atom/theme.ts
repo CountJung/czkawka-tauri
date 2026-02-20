@@ -1,6 +1,7 @@
 import { getCurrentWebviewWindow } from '@tauri-apps/api/webviewWindow';
 import { atom } from 'jotai';
 import { DARK_MODE_MEDIA, Theme } from '~/consts';
+import { isTauri } from '~/utils/common';
 import { themeAtom } from './primitive';
 
 function isSystemDark() {
@@ -8,6 +9,9 @@ function isSystemDark() {
 }
 
 function setSystemTheme(theme: string) {
+  if (!isTauri()) {
+    return;
+  }
   const ww = getCurrentWebviewWindow();
   if (theme === Theme.Light || theme === Theme.Dark) {
     ww.setTheme(theme);

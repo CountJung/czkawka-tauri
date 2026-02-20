@@ -19,14 +19,14 @@ const cwd = process.cwd();
 const allCmd: Cmd[] = [
   {
     name: 'tailwindcss',
-    runner: 'node',
-    args: ['--run', 'tailwindcss'],
+    runner: 'pnpm',
+    args: ['run', 'tailwindcss'],
     cwd: path.join(cwd, 'ui'),
   },
   {
     name: 'ui',
-    runner: 'node',
-    args: ['--run', 'dev'],
+    runner: 'pnpm',
+    args: ['run', 'dev'],
     cwd: path.join(cwd, 'ui'),
   },
   {
@@ -60,6 +60,7 @@ function run(names: CmdName[]) {
   for (const cmd of cmds) {
     const cp = spawn(cmd.runner, cmd.args, {
       cwd: cmd.cwd,
+      shell: process.platform === 'win32',
       env: {
         ...process.env,
         FORCE_COLOR: '1',
@@ -107,4 +108,10 @@ function run(names: CmdName[]) {
   });
 }
 
-run(['tailwindcss', 'ui', 'tauri']);
+const mode = process.argv[2];
+
+if (mode === 'web') {
+  run(['tailwindcss', 'ui']);
+} else {
+  run(['tailwindcss', 'ui', 'tauri']);
+}

@@ -1,5 +1,13 @@
 import { invoke } from '@tauri-apps/api/core';
+import { isTauri } from '~/utils/common';
 import type { ImageInfo, PlatformSettings, ScanCmd, Settings } from '~/types';
+
+function safeInvoke<T>(cmd: string, args?: Record<string, unknown>): Promise<T> {
+  if (!isTauri()) {
+    return new Promise(() => {});
+  }
+  return invoke<T>(cmd, args);
+}
 
 interface MoveFilesOptions {
   paths: string[];
@@ -29,42 +37,42 @@ interface RenameExtOptions {
 
 export const ipc = {
   getPlatformSettings(): Promise<PlatformSettings> {
-    return invoke('get_platform_settings');
+    return safeInvoke('get_platform_settings');
   },
 
   setupNumberOfThreads(numberOfThreads: number): Promise<number> {
-    return invoke('setup_number_of_threads', { numberOfThreads });
+    return safeInvoke('setup_number_of_threads', { numberOfThreads });
   },
 
   scan(scanCmd: ScanCmd, settings: Settings) {
-    return invoke(scanCmd, { settings });
+    return safeInvoke(scanCmd, { settings });
   },
 
   startListenScanProgress() {
-    return invoke('listen_scan_progress');
+    return safeInvoke('listen_scan_progress');
   },
 
   stopScan() {
-    return invoke('stop_scan');
+    return safeInvoke('stop_scan');
   },
 
   readImage(path: string): Promise<ImageInfo> {
-    return invoke('read_image', { path });
+    return safeInvoke('read_image', { path });
   },
 
   moveFiles(options: MoveFilesOptions) {
-    return invoke('move_files', { options });
+    return safeInvoke('move_files', { options });
   },
 
   deleteFiles(options: DeleteFilesOptions) {
-    return invoke('delete_files', { options });
+    return safeInvoke('delete_files', { options });
   },
 
   saveResult(options: SaveResultOptions) {
-    return invoke('save_result', { options });
+    return safeInvoke('save_result', { options });
   },
 
   renameExt(options: RenameExtOptions) {
-    return invoke('rename_ext', { options });
+    return safeInvoke('rename_ext', { options });
   },
 };

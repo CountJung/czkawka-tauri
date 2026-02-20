@@ -51,6 +51,7 @@ import { Tabs, TabsList, TabsTrigger } from '~/components/shadcn/tabs';
 import { DARK_MODE_MEDIA, Languages, MAXIMUM_FILE_SIZE, Theme } from '~/consts';
 import { useOnceEffect, useT } from '~/hooks';
 import { cn } from '~/utils/cn';
+import { isTauri } from '~/utils/common';
 import { PresetSelect } from './preset-select';
 
 const SettingsTab = {
@@ -138,7 +139,7 @@ function AppearancesSettings() {
   };
 
   const handleOpenCacheFolder = () => {
-    if (!platformSettings.cacheDirPath) {
+    if (!isTauri() || !platformSettings.cacheDirPath) {
       return;
     }
     openPath(platformSettings.cacheDirPath).catch((err) => {
@@ -186,7 +187,7 @@ function AppearancesSettings() {
         <div>
           <Button
             variant="link"
-            onClick={() => openUrl(REPOSITORY_URL)}
+          onClick={() => isTauri() && openUrl(REPOSITORY_URL)}
             title={REPOSITORY_URL}
           >
             {t('viewSourceCode')}

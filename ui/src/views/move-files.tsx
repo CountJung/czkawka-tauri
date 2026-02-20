@@ -1,5 +1,6 @@
 import { open as openFileDialog } from '@tauri-apps/plugin-dialog';
 import { useAtom, useSetAtom } from 'jotai';
+import { isTauri } from '~/utils/common';
 import { FolderSymlinkIcon, LoaderCircleIcon } from 'lucide-react';
 import { useState } from 'react';
 import { Trans } from 'react-i18next';
@@ -79,6 +80,9 @@ export function MoveFiles({ disabled }: MoveFilesProps) {
   };
 
   const handleChooseDestination = async () => {
+    if (!isTauri()) {
+      return;
+    }
     setOpenFileDialogLoading(true);
     const dir = await openFileDialog({ multiple: false, directory: true });
     setOpenFileDialogLoading(false);

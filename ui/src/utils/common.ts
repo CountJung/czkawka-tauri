@@ -1,6 +1,10 @@
 import { Tools } from '~/consts';
 import type { ToolsValues } from '~/types';
 
+export function isTauri(): boolean {
+  return '__TAURI_INTERNALS__' in window;
+}
+
 export function splitStr(s: string): string[] {
   return s
     .replace(/[\u2068\u2069]/g, '')
