@@ -11,6 +11,17 @@
         "~/src/*": "${workspaceFolder}/ui/src/*"
       },
       "preLaunchTask": "debug:web"
+    },
+    {
+      "name": "Debug Tauri (WebView)",
+      "type": "msedge",
+      "request": "attach",
+      "port": 9222,
+      "webRoot": "${workspaceFolder}/ui/src",
+      "sourceMapPathOverrides": {
+        "~/src/*": "${workspaceFolder}/ui/src/*"
+      },
+      "preLaunchTask": "dev"
     }
   ]
 }

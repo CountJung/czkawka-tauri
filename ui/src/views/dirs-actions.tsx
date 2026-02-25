@@ -57,6 +57,7 @@ export function DirsActions({
 
   const handleAddPath = async () => {
     if (!isTauri()) {
+      setManualAddDialogOpen(true);
       return;
     }
     setOpenFileDialogLoading(true);
@@ -93,7 +94,7 @@ export function DirsActions({
       <TooltipButton
         tooltip={t('add')}
         onClick={handleAddPath}
-        disabled={!isTauri() || openFileDialogLoading}
+        disabled={openFileDialogLoading}
       >
         {openFileDialogLoading ? (
           <LoaderCircleIcon className="animate-spin" />

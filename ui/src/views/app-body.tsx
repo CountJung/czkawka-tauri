@@ -39,16 +39,21 @@ export function AppBody() {
 
 function ProgressWrap(props: { label: string; value: number }) {
   const { label, value } = props;
-
-  if (value < -0.001) {
-    return null;
-  }
+  const indeterminate = value < -0.001;
 
   return (
     <div className="flex items-center">
       <div className="shrink-0 w-28">{label}:</div>
-      <Progress value={value} />
-      <div className="w-12 shrink-0 text-right">{value}%</div>
+      {indeterminate ? (
+        <div className="relative h-2 w-full overflow-hidden bg-primary/20">
+          <div className="h-full w-1/3 bg-primary animate-indeterminate" />
+        </div>
+      ) : (
+        <Progress value={value} />
+      )}
+      <div className="w-12 shrink-0 text-right">
+        {indeterminate ? '-' : `${value}%`}
+      </div>
     </div>
   );
 }
